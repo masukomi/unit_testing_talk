@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Unit Testing 101 - by masukomi</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="css/defaults.css" media="all" rel="stylesheet" type="text/css">
+    <link href="css/takahashi.css" media="all" rel="stylesheet" type="text/css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <!--
+    -->
+    <script language="JavaScript">
+
+      
+      
+    </script>
+    <style type="text/css">
+      /* Slideshow styles */
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+name: takahashi
+layout: true
+class: center, middle
+---
+
+# Unit Testing 101
+
+---
+class: left, middle
+layout: true
+---
+.full[.em[Warning!]  
+This presentation contains:  
+strong opinions,  
+adult language,  
+sarcasm,  
+zombies,  
+and the middle finger.]
+---
+class: center, middle
+layout: true
+---
+.em[Additionally:]
+This presentation is
+---
+class: center, middle, inverse-colors
+![Test Infected](images/infected_hand_black_white_413x426.png)
+---
+Viewing may result in:
+---
+unit tests
+---
+followed by
+---
+### lowered blood pressure,
+
+![Lowered Blood Pressure](images/puppy_relaxing.jpg)
+
+---
+### better sleep,
+
+![Better Sleep](images/nice_sleeping.jpg)
+---
+### Found Time
+
+![Found Time](images/reading.jpg)
+---
+
+and other ailments.
+
+---
+Unit Testing 101
+---
+Actually...
+---
+.em[Testing] 101
+---
+But more on  
+that later.
+---
+1st the  
+excuses:
+---
+Excuse  
+\#1
+---
+"I don't have time  
+to write tests."
+---
+or more  
+creatively...
+---
+"I could be coding   
+new features instead"
+---
+You're not
+---
+class: center, middle, inverse-colors
+layout: true
+---
+.left-antifooter[stupid]
+
+![Stupid](images/wisdom_teeth_xray_469x500.jpg)
+---
+class: center, middle, default-colors
+layout: true
+---
+or the walking dead...
+
+![Zombies](images/zombie_rock_band_500x312.jpg)
+---
+so you must not  
+have .em[thought]  
+about it.
+---
+Average Project time:  
+![average project time](images/20_vs_80.png)  
+20% vs 80%
+
+.right-footnote.mini[80% is obviously an estimate, but one based on  
+the experience of many project managers. Some even tracked it. *gasp*]
+---
+or, to put it  
+another way
+---
+Look at all  
+![hotness vs crap](images/hottness_vs_crap.png)  
+the suck!
+---
+Why?
+---
+Because you've  
+got no tests!
+---
+Your code ==  
+<img src="images/broken_image_icon.gif" width="198" height="204" />
+---
+and .em[you don't know it.]
+---
+You  
+<img src="images/broken_image_icon.gif" width="198" height="204" /><br />
+their code
+---
+and .em[they]  
+don't know it.
+---
+Furthermore : 
+---
+Tested code is  
+eliminated .em[faster]  
+when debugging.
+.right-footnote[4 out of 5 doctors agree.]
+
+???
+
+Tested code is eliminated faster
+
+* if there's a suspect with no 
+test and one with a test you're 
+more likely to find the bug 
+in the untested
+* if all your code is tested 
+you can quickly see which tests 
+cover the problematic situation
+and quickly elimate another suspect.
+---
+You won't spend time  
+"getting it working"
+
+.right-footnote[when you *know* that it works from the start]
+---
+But
+---
+"I don't have time."
+---
+generally means:
+---
+.full["I don't have time .em[to learn]  
+how to do it / do it well, and  
+I want to write real code now."]
+---
+And that's just 
+---
+short-sighted
+---
+lazyness
+---
+and
+---
+stagnation
+---
+Is that who you  
+want to be?
+---
+Excuse  
+\#2
+---
+No-one else  
+is writing them
+---
+![Alone?](images/alone_in_homewood_500x334.jpg)
+---
+The odd one out  
+![odd one out](images/odd_man_out_500x375.jpg)
+---
+But you're  
+not a teenager.
+---
+and
+---
+"In the land of the blind  
+the one-eyed man is king"
+---
+Excuse  
+\#3
+---
+Our (manual)  
+"testing"  
+is good enough.
+---
+Oh really...
+---
+You :
+---
+never skip  
+a step?
+---
+never make  
+a mistake?
+
+.right-footnote[You are human, *right*?]
+
+???
+
+when going through those manual steps
+---
+check .em[all]  
+tests for  
+every change?
+---
+Do you even  
+.em[have]  
+acceptance tests*?
+.right-footnote[We'll get to those in a bit]
+---
+Anyway...
+
+.right-footnote[We're done with that excuse right?]
+---
+class: center, middle, inverse-colors
+~next section~
+
+???
+
+* Stand up
+* introduce as testaphobic
+* test-infected for ~2 yrs.
+* prior I made excuse # 1 & 2
+* ...daily
+* if not for people like
+** Martin Fowler
+** Dave Astels
+** Dave Thomas
+* not always all i should
+* one day at a time.
+---
+Top 12 Reasons to  
+write unit tests
+
+.right-footnote[according to [OnJava](http://www.onjava.com/pub/a/onjava/2003/04/02/javaxpckbk.html)]
+---
+.medium[#1] "Tests Reduce Bugs  
+in New Features"
+---
+Catch stupid  
+mistakes earlier
+---
+enforce  
+the spec
+---
+don't require  
+waiting for  
+anything
+---
+.medium[#2] "Tests Reduce Bugs  
+in Existing Features"
+
+???
+
+Daylight Savings example:
+
+* everything ran great
+* tests passed
+* daylight savings came
+* tests blew up on the next run.
+---
+.medium[#3] "Tests Are Good  
+Documentation."
+---
+They .em[provide] good  
+.em[examples],
+.right-footnote[of what's expected]
+---
+.em[show how]  
+your code works,
+---
+and .em[what]  
+it does.
+
+???
+
+Example: It takes these 
+inputs. It gives those outputs.
+---
+.medium[#4] "Tests Reduce the  
+Cost of Change."
+
+???
+
+Don't stop yet.
+---
+And increase  
+the speed.
+---
+.em[Huge] changes
+---
+.un-em[tiny] changes
+---
+You .em[know] if it  
+works or doesn't  
+.em[right away.]
+---
+They Passed?
+---
+Move on
+---
+They failed?
+---
+.em[Fix], then  
+move on.
+
+.right-footnote[No worrying about what  
+else may be broken.]
+---
+No, "...checking  
+if I missed  
+something."
+---
+.medium[#5] "Tests Improve  
+Design."
+---
+hard to test  
+==  
+too complex,
+
+???
+
+If something's hard to test
+it's either too complex...
+---
+not  
+modular,
+---
+or breaking  
+encapsulation.
+---
+.medium[#6] "Tests Allow  
+Refactoring."
+
+.right-footnote[Kinda the same as  
+reducing the cost of change]
+
+???
+
+Kind-of the same as
+reducing the cost of change.
+---
+.medium[#7] "Tests Constrain  
+Features"
+
+.right-footnote[If you practice  
+test-first development]
+
+???
+
+If you practice test-first 
+development it'll keep 
+you from wandering into 
+the rabbit-holes of "I could just..."
+---
+.medium[#8] "Tests Defend Against  
+Other Programmers."
+---
+We will .em[SO]  
+get into that later.
+---
+.medium[#9] "Testing Is Fun"
+
+.right-footnote[If you're test-infected  
+it's a rush.]
+
+???
+
+Don't explain yet
+---
+.full[
+Keep pushing the button  
+until you get the Green Bar!  ]
+![Slot Machine](images/slot_machine.jpg)
+
+???
+
+Like being addicted to slots.
+Only with guaranteed payouts.
+---
+.medium[#10] "Testing Forces  
+You to Slow Down  
+and Think"
+
+.right-footnote[Especially if you're  
+a test-first developer.]
+---
+can't test w/out  
+understanding it
+---
+.medium[#11] "Testing Makes  
+Development  
+Faster"
+
+.right-footnote[You hae no idea...]
+---
+Test each piece
+.em[as it's written]
+---
+not, "when I  
+have enough"
+
+???
+.medium[
+
+* No, waiting until you have
+all the other bits and pieces wired up
+* You know if it will break *when* you're working on it.
+* Not weeks later.
+
+]
+---
+.medium[#12] "Tests  
+Reduce Fear"
+---
+Fear of change
+
+.right-footnote[It's so nice not to stress...]
+---
+Fear of breakage
+---
+Fear of updates
+---
+Fear of incompatability
+---
+Fear of deadlines
+
+.right-footnote[No worries that some big bug will crop up.  
+You've already tested for them]
+---
+The infected  
+are
+---
+![Not Afraid](images/not_afraid_500x375.jpg)
+
+???
+
+Fearless / not afraid
+---
+class: center, middle, inverse-colors
+~next section~
+---
+I look at it  
+this way:
+---
+Testing
+<span>:</span>
+---
+class: left, middle
+layout: true
+---
+.left-column[
+Enables 
+.em[Fearless] 
+Refactoring.
+]
+.right-column[![Giving the finger](images/finger.jpg)]
+---
+class: center, middle
+layout: true
+---
+![temptation](images/temptation.jpg)
+
+Makes you look  
+like a god.
+
+???
+
+AND...
+---
+.full[![Nice Sleeping](images/nice_sleeping.jpg)  
+Lets you sleep  
+like a kid again]
+
+???
+
+BECAUSE...
+---
+regardless of what  
+you do, you .em[know]  
+it still works.
+---
+.em[Look like a god]  
+(until your coworkers  
+do it too).
+
+???
+
+because your stuff 
+is done faster
+and is more reliable
+than anyone else's.
+---
+.em[Sleep like a kid: ]  
+less time debugging  
+& no worries  
+when you check-in  
+---
+...and no midnight  
+calls because you  
+broke the system.
+---
+Still not  
+convinced?
+---
+How 'bout this:
+---
+Is your code  
+broken?
+---
+Can you  
+.em[prove] it?
+
+???
+
+Where's your evidence?  
+Does it *still* work?  
+Will it work on someone 
+else's computer?
+---
+No?
+---
+And that works  
+for you?
+
+.right-footnote[hmm...]
+---
+Just, your word...
+---
+I wonder...
+
+![I wonder](images/i_wonder.jpg)
+---
+Dear HR,
+---
+Henceforth  
+my salary  
+will be $200K
+
+.right-footnote[Show me the money!]
+---
+![dashboard](images/dashboard.jpg)
+
+Vroom baby...
+---
+What's that?
+---
+Your word  
+isn't good enough?
+---
+![what?!](images/stop_here_on_red.jpg)
+
+???
+
+Wait a minute...
+---
+But that means...
+
+.right-footnote[Double standard much?]
+---
+. . .
+---
+Sold yet?
+---
+Then let's  
+move on.
+
+---
+class: center, middle, inverse-colors
+~next section~
+---
+The Basics
+---
+Can I test it?
+
+???
+
+Pre-amble to flow-chart
+---
+Wonder no more!
+![is it testable?](images/is_it_testable.png)
+
+???
+
+Can "success" be determined
+objectively?
+---
+Testing != Unit Testing
+---
+Unit Testing ==  
+![puzzle piece](images/puzzle_piece.jpg)
+
+???
+
+unit test is just 
+one piece of the puzzle
+---
+3 main kinds  
+of .em[code] tests
+---
+Unit
+.right-footnote[Tests that one thingworks]
+---
+Integration  
+.right-footnote[Tests that some things work together.  
+Rails calls these "Functional Tests"]
+---
+System
+.right-footnote[Tests that everything works together.  
+Rails calls these "Integration Tests"]
+---
+![test hierarchy](images/test_hierarchy.png)
+
+.right-footnote[We'll get to the details on all of these.]
+
+???
+.medium[
+
+* test hierarchy
+* we'll get into details
+* takes time to accrete all of these
+* but you *need* to be aware 
+of what you're writing 
+and its limitations.
+
+]
+---
+class: center, middle, inverse-colors
+~next section~
+---
+Unit Testing
+---
+We've got
+---
+C
+---
+C++
+---
+C#
+---
+Erlang
+---
+Java
+---
+Perl
+---
+Python
+---
+Ruby
+---
+and more...
+---
+All have Unit Testing  
+and Mocking libraries
+---
+Unit Tests  
+are
+---
+100%  
+"black box"
+---
+![blindfold](images/blindfold.jpg)
+
+???
+
+Blindfolded
+---
+Test .em[only] what  
+the API exposes.
+---
+Pretend  
+you're  
+clueless.
+---
+![clueless](images/clueless_face.jpg)
+---
+otherwise ".em[how]"  
+can't change.
+
+???
+
+.medium[
+
+* you want HOW something is 
+implemented to be flexible
+* as long as API isn't changing
+* change HOW something works whenever.
+* without updating your tests
+
+]
+---
+Give it good input  
+![crowned lilly](images/crowned_lilly.jpg)
+---
+class: left, middle
+layout: true
+---
+.medium[
+```java
+try {
+    someMethod(goodInput);
+} catch (SomeException se){
+    fail("why does god hate me?");
+}
+```
+]
+
+???
+
+And test that it doesn't fail.
+---
+class: center, middle
+layout: true
+---
+Give it bad input.  
+![jumping husband](images/jumping_husband.jpg)
+---
+class:left, middle
+layout: true
+---
+.medium[
+```java
+try {
+    someMethod(badInput);
+    fail("why does god hate me?");
+} catch (SomeException se){
+    //YAY! I'm redeemed!
+}
+```
+]
+
+???
+
+and test that it *does* fail.
+---
+class: center, middle
+layout: true
+---
+Make sure it only  
+blows up when  
+it's supposed to.
+---
+![neon candy cane rain](images/neon_candy_cane_rain.jpg)
+
+???
+
+explosion
+---
+Naming  
+conventions.
+---
+Test Class Name:  
+`<Class We're Testing>Test`
+
+.right-footnote[Otherwise all your classes start with Test...  
+and they're harder to find.]
+
+???
+
+Name of the class you're testing
+followed by "test". As opposed to the 
+other way around. Otherwise all 
+your file names start with "test".
+---
+Test Method Name:  
+.medium[`test<method we're testing>()`]
+
+???
+
+Test method names *are* the other way
+around: "test" followed by the name
+of the method you're testing.
+---
+Structure of  
+a Test Case:
+---
+series of  
+.em[independent] tests
+---
+.em[Each] Test
+---
+test .em[One] Method
+---
+touches .em[One] class
+---
+(the class you're testing)
+
+???
+
+# PAUSE
+---
+If the method involves  
+another class then  
+.em[Mock* The Other Class]
+
+.right-footnote[* We'll get to mocks in a minute]
+
+???
+
+We'll get to mocks in a minute.
+---
+Otherwise you're doing  
+an .em[integration] test  
+
+.right-footnote[Integration of the two classes...]
+---
+One class's bugs can  
+cause another .em[good]  
+class to fail
+
+.right-footnote[but which one is the broken one?]
+---
+class: center, middle, inverse-colors
+~next section~
+---
+Mock Objects
+---
+Google this:  
+"Mocks .em[Aren't] Stubs"
+
+.right-footnote[or [click this link](http://martinfowler.com/articles/mocksArentStubs.html)]
+---
+Mock objects are  
+GOD
+
+.right-footnote[or maybe just *a* god...]
+---
+Mock Objects  
+let you:
+---
+provide controlled  
+test data,
+---
+.full[
+verify that  
+.em[the things you thought]  
+would be called  
+.em[were]
+]
+---
+AND
+---
+That they were passed  
+the parameters you  
+expected.
+---
+class: left, middle
+layout: true
+---
+.small[
+Example in Java using jUnit & EasyMock
+
+```
+1: IFoo foo = createMock(IFoo.class);//interface
+2: IBar bar = createMock(IBar.class);//interface
+3: expect(foo.equals(bar)).andReturn(false));
+4: expect(foo.equals(foo)).andReturn(true));
+5: expect(bar.equals(foo)).andReturn(false));
+6: replay(foo);
+7: replay(bar);
+8: 
+9: //test something that should only add items once
+10: myTestObj.add(foo);
+11: myTestObj.add(bar);
+12: myTestObj.add(foo);
+13: assertThat(2, equalTo(myTestObj.getItems().size()));
+14: verify(foo);
+15: verify(bar);
+```
+]
+
+.right-footnote[This will be on the test. Please bring #2 pencils.]
+
+???
+
+Testing collection of unique items
+---
+class: center, middle
+layout: true
+---
+.medium[Let's break that down..]  
+![break it down](images/break_it_down.jpg)
+---
+class: left, middle
+layout: true
+---
+.medium[
+```java
+1: IFoo foo = createMock(IFoo.class);
+  //interface
+```
+]
+Create a fake object,  
+.em[NOT] a stub,  
+.em[from an interface.]
+---
+.medium[
+```java
+3: expect(foo.equals(bar)).andReturn(false));
+```
+]
+Assert that .em[later on]  
+the `.equals(...)` method will  
+be called.
+---
+.medium[
+```java
+3: expect(foo.equals(bar)).andReturn(false));
+```
+]
+.em[AND] it will be passed  
+.em[that specific bar] object
+
+.right-footnote[There are ways to specify Any object,  
+and other variants, instead of a specific object.]
+---
+.medium[
+```java
+:3: expect(foo.equals(bar)).andReturn(false));
+```
+]
+
+.em[AND] when that happens  
+the fake foo will .em[return false].
+---
+class: center, middle
+layout: true
+---
+3 different assertions  
+in one little line.
+---
+class: left, middle
+layout: true
+---
+.medium[
+```java
+3: expect(foo.equals(bar)).andReturn(false));
+```
+]
+
+How could it be?  
+there's .em[no implementation] of foo.
+---
+.medium[
+```java
+3: expect(foo.equals(bar)).andReturn(false));
+```
+]
+You're .em[asserting] that  
+something .em[will] try to call it.  
+.right-footnote[Everyone got all that?]
+
+???
+
+Everyone got all that?
+---
+.medium[
+```java
+14: verify(foo);
+```
+]
+This will blow up  
+if .em[any] of those  
+things .em[didn't] happen
+---
+class: center, middle
+layout: true
+---
+But, it's even  
+cooler than that.
+---
+class: left, middle
+layout: true
+---
+.medium[
+```java
+3: expect(foo.equals(bar)).andReturn(false));
+4: expect(foo.equals(foo)).andReturn(true));
+```
+]
+We only have .em[one] line  
+asserting that foo.equals(.em[bar])  
+will be called.
+---
+.medium[
+```java
+3: expect(foo.equals(bar)).andReturn(false));
+4: expect(foo.equals(foo)).andReturn(true));
+```
+]
+If it gets called .em[twice]  
+with .em[bar] it'll blow up.
+---
+If we said 
+.medium[
+```java
+3: expect(foo.equals(bar)).andReturn(false))
+    .times(2);
+```
+]
+---
+.medium[
+```java
+14: verify(foo);
+```
+]
+.em[would blow up.]
+Because the assertion that it would  
+be called twice didn't pan out.
+---
+class: center, middle
+layout: true
+---
+Excuse
+\# 5
+---
+"If my test is  
+bigger than my  
+method I'll need  
+a test case for  
+my test case."
+
+.right-footnote[I've heard this.]
+---
+This is  
+.em[pure F.U.D.]
+
+.right-footnote[Fear, Uncertainty, and Doubt...  
+as if you didn't already know.]
+---
+Tests use
+---
+.em[simple]
+---
+and .em[tested] 
+---
+methods.
+---
+.medium[
+```java
+assertTrue(<something you're testing>)
+```
+]
+.right-footnote[Does that look like it needs a test to you?]
+
+???
+
+Does that look like it needs 
+a test to you?
+---
+complexity in 
+tests is .em[bad]
+---
+Back to Unit Tests.
+.right-footnote[and the future...]
+---
+class: center, middle, inverse-colors
+~next section~
+---
+1 .em[test] class
+has many tests
+---
+.em[But]
+---
+they .em[must] be 
+independent
+---
+Set up.
+Test.
+Tear down.
+Repeat.
+.right-footnote[Call me in the morning if symptoms persist.]
+---
+Test Suites
+&
+Test Cases
+---
+Test Suites
+test
+
+.right-footnote[one Test Suite per Java "package"]
+---
+.em[everything]
+Below them.
+
+---
+.right-footnote["There can be only one."]
+.em[The] Global 
+Suite tests
+---
+.em[everything]
+.right-footnote[assuming you remembered to add your suites to it.]
+---
+![test suites and cases](images/test_suites_and_cases.png)
+.right-footnote[Got it?]
+
+???
+
+test suites and cases hierarchy
+---
+class: center, middle, inverse-colors
+~next section~
+---
+Integration tests
+.right-footnote["Functional Tests" in Rails land]
+---
+code  
++  
+database
+---
+(integration test)
+---
+my code  
++  
+your code
+---
+(integration test)
+---
+1st, Unit test your  
+pieces with a mock.
+---
+code  
++  
+Mock of database
+---
+(unit test)
+---
+my code  
++  
+Mock of your code
+---
+(unit test)
+---
+.em[Then] 
+test them together.
+---
+Why?
+---
+With .em[just]  
+integration tests
+---
+You can't  
+.em[definitively] say 
+---
+"the problem is in  
+your code"
+---
+or
+---
+"the problem is in  
+the database"
+---
+thus
+---
+time wasted  
+finding the bug.
+---
+Which one  
+is it in?
+---
+integration + unit tests  
+means 
+---
+your code works  
+.em[and] 
+---
+your code works  
+.em[with] the database.
+.right-footnote[or whatever you were integrating with.]
+
+???
+
+Case in Point: 
+Was given new db dump to test against.
+Integration test told me there was a problem
+Unit test told me it wasn't in my code.
+---
+Integration tests  
+use the  
+same tools.
+.right-footnote[as unit tests]
+
+???
+
+.medium[
+...as unit tests, 
+so there's nothing extra
+to learn.
+
+The harder thing is having
+the discipline to make
+your unit tests *not* 
+be integration tests.
+]
+---
+class: center, middle, inverse-colors
+~next section~
+---
+System Tests
+.right-footnote["Integration Tests" in Rails land]
+---
+A System test tests  
+that .em[everthing]  
+works together.  
+---
+my code
+---
++
+---
+your code
+---
++
+---
+database
+---
++
+---
+server
+---
++
+---
+client
+---
++
+---
+kitchen  
+sink
+
+???
+
+# PAUSE
+---
+testing the client  
+requires other tools 
+
+.right-footnote[ to drive the 
+presentation layer ]
+
+??? 
+
+To drive the presentation layer,
+clicking buttons, filling in 
+fields, etc.
+---
+but hook into  
+the Global tests.
+---
+class: center, middle, inverse-colors
+~next section~
+---
+.em[Functional]  
+Testing
+.right-footnote[Not what Rails' "Functional" tests]
+---
+Or is it  
+.em[Acceptance]  
+Testing?
+---
+They're the  
+same thing.
+---
+High Level
+---
+Written  
+.em[Before]  
+all others.
+.right-footnote[So why is she just getting to it now?]
+---
+Insanity prevention.
+
+![Pirate Cat Head](images/pirate_cat_head.jpg)
+---
+Based on  
+"User Stories"
+---
+class: left
+layout: true
+---
+A User Story:  
+.medium[
+```
+As a cashier
+I want to keep a running receipt
+with each item's name and price.
+```
+]
+---
+Its Acceptance Test: .medium[
+```
+Setup: the cashier has a new customer.
+
+Operation: the cashier scans a 
+toothbrush for $2.25
+
+Verify: the receipt has 
+a description of the toothbrush 
+and its price.
+```
+]
+.right-footnote[Try coding each unit test with this structure too.]
+---
+class: center, middle
+layout: true
+---
+Saves you writing  
+code the client  
+doesn't want
+
+.right-footnote[even if the "client" is 2 cubes away]
+---
+Code only what's  
+in the story.
+---
+Implies what  
+unit tests  
+are needed.
+---
+Assume we're testing  
+the *Register*...
+---
+class: left
+layout: true
+---
+.medium[
+```
+Setup: The cashier has a new customer
+```
+]  
+We'll need a *Cashier* object.  
+We'll need a *Customer* object.
+---
+class: center, middle
+layout: true
+---
+But, we're testing .em[Register],
+---
+those are for  
+the .em[Cashier] test.
+---
+class: left, middle
+layout: true
+---
+.medium[
+```
+Operation: The cashier scans a 
+toothbrush for $2.25
+```
+]
+We'll need a Toothbrush object.
+---
+.medium[
+```
+Operation: The cashier scans a 
+toothbrush for $2.25
+```
+]
+We'll need the Register  
+scanning the Toothbrush.
+---
+.medium[
+```
+Operation: The cashier scans a 
+toothbrush for $2.25
+```
+]
+The Cashier test will test  
+presenting the Toothbrush  
+to the Register.
+---
+.medium[
+```
+Operation: The cashier scans  
+a toothbrush for $2.25
+```
+]
+.full[
+We'll .em[assert] that the Toothbrush  
+will give the register a price of $2.25  
+.em[and] that some `.getPrice()` type  
+method is called
+]
+---
+class: center, middle
+layout: true
+---
+Because it's .em[a mock]
+---
+class: left, middle
+layout: true
+---
+.middle[
+```Verify: The receipt has a description of the toothbrush and its price.```
+]
+
+Did we get a receipt?  
+Does it have the right price?
+---
+The tests practically  
+write themselves.
+---
+class: center, middle, inverse-colors
+~next section~
+---
+![so many choices](images/so_many_choices.jpg)
+
+What to test
+---
+Mission Critical  
+==  
+Test or Die
+---
+Complex  
+==  
+Test or Suffer
+---
+Everything Non-trivial  
+==  
+Test or waste time.
+---
+Everything Trivial  
+==  
+a waste of time.
+---
+"Code coverage"  
+is a B.S. metric.
+.right-footnote[and you can quote me on that.]
+---
+Java is .em[littered]  
+with simple  
+getters & setters.
+
+.mini[.right-footnote[and getters and setters and getters and setters and getters and setters and getters and setters and getters and setters]]
+---
+But if you don't test them  
+you'll have < 50%  
+"code coverage"
+
+.right-footnote[Hopefully your manager isn't fixated.]
+---
+class: center, middle, inverse-colors
+~next section~
+---
+So .em[when]  
+do we test?
+---
+Some people say,  
+"write the test first"
+
+![test first](images/test_driven_process.png)
+.right-footnote[This is "Test First" or "Test Driven" development.]
+---
+Test first  
+is .em[ideal]
+---
+but we're not.
+.right-footnote[...ideal]
+---
+So,
+---
+just .em[before], 
+---
+just .em[after], 
+---
+or .em[while] 
+---
+you're writing
+the method.
+
+.right-footnote[As long as the code is fresh in your mind and the test gets written....]
+
+???
+
+preamble to 
+when to test 
+flow-chart
+---
+![images/when_to_test.png](images/when_to_test.png)
+
+.right-footnote[Charting this complicated sequence...]
+
+---
+AND
+---
+.em[Before] you  
+fix the bug.
+---
+Why?
+---
+To .em[confirm] it's  
+what you think.
+---
+to know  
+when you're  
+done fixing
+
+.right-footnote[when you make your test fail you know you've replicated the bug.]
+---
+and guarantee  
+you'll .em[never] see  
+the bug again.
+
+.right-footnote["Didn't you fix that last week?"]
+---
+class: center, middle, inverse-colors
+~next section~
+---
+Getting everyone  
+on the same page.  
+---
+External motivation  
+won't work.  
+.right-footnote[way too many psychological studies show that  
+you need *internally* valued reasons to do something.]  
+---
+So how do you get  
+everyone testing?
+---
+Simple
+.right-footnote[shame, humiliation, peer pressure, drugs, pirated videos, er wait... that's not right]  
+---
+Make sure everyone  
+knows about the  
+Global test class.
+---
+Make sure that ignorance is 
+not an excuse.
+---
+Provide example mocks
+of all the complicated bits.
+---
+Hook the build   
+system to your tests.  
+.right-footnote[ prevent ANY build without passing all tests. ]
+---
+Test .em[your] code  
+religiously.
+.right-footnote[where "your" code is defined as anything you edit or create.]
+---
+You touch it,
+---
+You test it.
+.right-footnote[No shirt, no shoes, no service.]
+---
+Or else...  
+![images/walk_the_plank.jpg](images/walk_the_plank.jpg)
+---
+Morning routine :
+.left[
+
+* sit down
+* update from repo
+* run global test
+
+]
+---
+.em[Red Bar?]
+---
+![images/mad_people.jpg](images/mad_people.jpg)  
+.full[The repo knows 
+who to kill.]
+
+.right-footnote[The author does not advocate the illegal  
+use of violence against coworkers. ]
+
+???
+
+Imagine if every week someone 
+ran a test and found your code broke something.
+You'd start testing just to not look
+foolish.
+---
+Green Bar?
+---
+![images/smile.jpg](images/smile.jpg)
+
+Yay! Time for coffee.  
+.right-footnote[The author does not advocate the imprisonment of smiley balls.]
+---
+pre-check-in routine:
+.medium.left[
+
+* update from repo
+* test what you were working on.
+* run global tests.
+* fix anything that failed.
+* repeat until green
+* check-in
+
+]
+.right-footnote[ `assertTrue(true)` does not a test make.]
+---
+broken code   
+is .em[never] allowed  
+in public branches  
+.right-footnote[ broken == not passing  
+all tests]
+---
+Broken build  
+==
+---
+![Starbucks logo](images/starbucks_logo_478x486.gif)
+
+.right-footnote[Get me a "Frappuccino" baby.]
+---
+maybe
+---
+![Dunkin Donuts logo](images/dunkin_donuts_logo_800x277.gif)
+.right-footnote[Oh, well, glazed please.]
+
+???
+
+Donuts?
+---
+Continuous Integration Servers  
+keep an eye on the build.  
+.right-footnote[Check out Jenkins]  
+---
+![cruise control passing](images/cruise_control_pass_764x444.jpg)
+.right-footnote[See which projects pass...]  
+---
+![cruise control failing](images/cruise_control_fail_764x444.jpg)
+.right-footnote[and which ones don't...]  
+---
+![images/cruise_control_details_855x457.jpg](images/cruise_control_details_855x457.jpg)
+.right-footnote[and get the details on them.]  
+---
+For the managers:
+---
+.em[Committment]   
+is key early on.
+---
+Test value  
+---
+class: center, middle, inverse-colors
+layout: true
+---
+.em[increases   
+with   
+volume.]  
+---
+class: center, middle
+layout: true
+---
+find .em[the  
+infected]
+---
+turn them   
+loose
+---
+Find the   
+curious
+---
+.em[get them  
+infected]
+---
+".em[Trying]" testing   
+is worse than   
+not testing
+---
+Another   
+option:
+---
+Don't accept   
+untested code
+---
+ever.
+---
+not tested   
+==   
+not in release
+---
+THE END  
+.right-footnote[except for the legal.]  
+---
+.medium[.em[Warning!]
+Downloading pirated  
+presentations is stealing.  
+Stealing is against the law.]
+---
+.medium[Fortunately for you   
+this is [CC licensed](http://creativecommons.org/licenses/by-sa/3.0/us/),  
+as are all the images  ]
+.small[(except the obvious corporate logos)]  
+![images/cc_88x31.png](images/cc_88x31.png)
+---
+.medium[This was created with the fantastic  
+[Remark.js](http://remarkjs.com)
+JavaScript presentation library.]
+---
+.small[plus a little custom hackery]
+---
+Image Credit:
+.mini.left[
+
+* "20070609-IMG_1303.jpg" AKA "lowered blood pressure"  
+CC licensed and found here http://www.flickr.com/photos/8969771@N05/557526252/
+* "Reading" AKA "found time"  
+CC licensed and found at http://www.flickr.com/photos/nicholasjon/1808790/
+* "Wisdom Teeth XRay" AKA "stupid"  
+CC licensed (a derivative work?) and found here http://www.flickr.com/photos/restlessglobetrotter/210915395/
+* "Zombie Walk: Should Be an Indie Rock Band"  
+CC licensed and found here http://www.flickr.com/photos/grantneufeld/52928015/
+* "Alone in Homewood"  
+CC licensed and found here http://www.flickr.com/photos/hryckowian/109004281/
+* "Odd Man Out"  
+CC licensed and found here http://www.flickr.com/photos/lisanorwood/1046416640/
+* "teenagers"  
+CC licensed and found here http://www.flickr.com/photos/feuilllu/302001867/
+* "Slot Machine"  
+CC licensed and found here http://www.flickr.com/photos/kubina/347687569/
+* "Not Afraid"  
+CC licensed and found here http://www.flickr.com/photos/bepster/46334556/
+* "Teen Requisite"  
+CC licensed & fonud here http://www.flickr.com/photos/thatrileygirl/18639377/
+* "Temptation"  
+CC licensed & fonud here http://www.flickr.com/photos/thomashawk/20012392/
+
+]
+.medium.left[Keep going...]
+---
+.medium[More goodness found here:]
+.mini.left[
+
+* "Nice Sleeping"  
+CC licensed & found here http://www.flickr.com/photos/20181006@N00/123433418/
+* "I wonder how, I wonder why..."  
+CC licensed and found here http://www.flickr.com/photos/sashomasho/388315734/
+* Dashboard  
+CC licenced and found here http://www.flickr.com/photos/sprostongreen/260156735/
+* "What? Okay. Wait a minute! Okay. What? Oh, Hell!"  
+CC licensed and found here http://www.flickr.com/photos/frogmuseum2/97650215/
+* Puzzle Piece  
+CC licensed & http://www.flickr.com/photos/joeyday/147651554/
+* "blindfold V"  
+CC licensed & found here http://www.flickr.com/photos/redroom/179919055/
+* "Doing My Worst"  
+CC licensed & found here http://www.flickr.com/photos/mscaprikell/30790829/
+* "Crowned Lilly"  
+CC licensed & found here http://www.flickr.com/photos/bestrated1/69491559/
+* "Jumping Husbands! day 99"  
+CC licensed & found here http://www.flickr.com/photos/trishabrunner/460898046/
+* "Neon Candy Cane Rain"  
+CC licensed and found here http://www.flickr.com/photos/viewmaker/183523814/
+* "Break it Down"  
+CC licensed and found here http://www.flickr.com/photos/randomjerry/213890346/
+* "Cheeshire Cat"  
+CC licensed & found here http://www.flickr.com/photos/frogmuseum2/317094054/in/set-72157594567618175/
+* "Walk the plank"  
+CC licensed and found here http://www.flickr.com/photos/fcb/156025443/
+* "Mad People"  
+CC licensed & found at http://www.flickr.com/photos/greggoconnell/386848593/
+* "Smile!"  
+CC licensed & found at http://www.flickr.com/photos/sean-b/245744537/
+]
+
+---
+That's it!
+---
+Go in peace, and may all your tests be green.
+
+    </textarea>
+    <script src="js/remark-0.6.0.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create({ ratio: "16:9" });
+
+
+      slideshow.on('showSlide', function (slide) {
+        setTimeout('jQuery(".remark-visible .remark-slide-content p").delay(0).animate({ opacity: 1 }, 200);')
+        setTimeout('jQuery(".remark-visible .remark-slide-content p").fitText(0.9);', 2)
+      });
+    </script>
+  </body>
+</html>
